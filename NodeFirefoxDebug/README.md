@@ -1,10 +1,10 @@
-# Selenium Grid Node - Chrome Debug
+# Selenium Grid Node - Firefox Debug
 
 _This image is only intended for development purposes!_ Runs a Selenium Grid Node with a VNC Server to allow you to visually see the browser being automated. Since it runs additional services to support this it is too heavy weight for usage within a Selenium Grid cluster.
 
 ## Dockerfile
 
-[`selenium/node-chrome-debug` Dockerfile](https://github.com/SeleniumHQ/docker-selenium/blob/master/NodeChromeDebug/Dockerfile)
+[`selenium/node-firefox-debug` Dockerfile](https://github.com/SeleniumHQ/docker-selenium/blob/master/NodeFirefoxDebug/Dockerfile)
 
 ## How to use this image
 
@@ -17,7 +17,7 @@ $ docker run -d -P --name selenium-hub selenium/hub
 Once the hub is up and running will want to launch nodes that can run tests.
 
 ```
-$ docker run -d -P --link selenium-hub:hub selenium/node-chrome-debug
+$ docker run -d -P --link selenium-hub:hub selenium/node-firefox-debug
 ```
 
 You can acquire the port that the VNC server is exposed to by running:
@@ -38,7 +38,7 @@ If you are running Boot2Docker on Mac then you already have a [VNC client](http:
 When you are prompted for the password it is __secret__. If you wish to change this then you should either change it in the `/NodeBase/Dockerfile` and build the images yourself, or you can define a docker image that derives from the posted ones which reconfigures it:
 
 ``` dockerfile
-FROM selenium/node-chrome-debug:3.8.1-aluminum
+FROM selenium/node-firefox-debug:3.8.1-aluminum
 
 RUN x11vnc -storepasswd <your-password-here> /home/seluser/.vnc/passwd
 ```
