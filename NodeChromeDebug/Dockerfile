@@ -8,6 +8,13 @@ LABEL authors=SeleniumHQ
 USER root
 
 #=====
+# 中文字体
+#=====
+RUN apt-get update -qqy \
+  && apt-get -qqy install ttf-wqy-microhei ttf-wqy-zenhei \
+  && apt-get clean
+
+#=====
 # VNC
 #=====
 RUN apt-get update -qqy \
@@ -48,7 +55,7 @@ RUN apt-get update -qqy \
     fluxbox \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-USER seluser
+USER root
 
 #==============================
 # Generating the VNC password as seluser
@@ -61,6 +68,7 @@ RUN mkdir -p ~/.vnc \
 #==============================
 # Scripts to run Selenium Node
 #==============================
+
 COPY entry_point.sh /opt/bin/entry_point.sh
 
 EXPOSE 5900
