@@ -5,7 +5,7 @@
 FROM selenium/node-chrome-debug:3.8.1-aluminum
 LABEL authors=SeleniumHQ
 
-USER seluser
+USER root
 
 RUN apt-get update -qqy \
   && apt-get -qqy install ttf-wqy-microhei ttf-wqy-zenhei \
