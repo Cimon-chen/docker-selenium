@@ -70,6 +70,7 @@ RUN mkdir -p ~/.vnc \
 #==============================
 
 COPY entry_point.sh /opt/bin/entry_point.sh
+USER root
 RUN chmod +x /opt/bin/entry_point.sh
 
 EXPOSE 5900
