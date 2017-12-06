@@ -73,7 +73,7 @@ COPY entry_point.sh /opt/bin/entry_point.sh
 
 USER root
 RUN chmod +x /opt/bin/entry_point.sh
-RUN chmod +w /etc/hosts
+RUN chmod 666 /etc/hosts
 
 USER seluser
 
