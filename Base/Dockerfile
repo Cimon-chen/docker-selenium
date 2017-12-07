@@ -28,6 +28,7 @@ RUN apt-get -qqy update \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
   && sed -i 's/securerandom\.source=file:\/dev\/random/securerandom\.source=file:\/dev\/urandom/' ./usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security
 
+RUN apt-get -qqy install vim-gtk
 #===================
 # Timezone settings
 # Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
@@ -42,10 +43,11 @@ RUN echo "${TZ}" > /etc/timezone \
 RUN useradd seluser \
          --shell /bin/bash  \
          --create-home \
-  && usermod -a -G sudo seluser \
+  && usermod -a -G root seluser \
   && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
   && echo 'seluser:secret' | chpasswd
 
+RUN chmod 666 /etc/hosts
 #===================================================
 # Run the following commands as non-privileged user
 #===================================================
