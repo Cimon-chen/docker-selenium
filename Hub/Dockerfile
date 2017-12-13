@@ -2,7 +2,8 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM baozhida/selenium-base:3.3.1
+#FROM baozhida/selenium-base:3.3.1
+FROM cimoniris/base:latest
 MAINTAINER baozhia <baozhida88@126.com>
 
 #========================
