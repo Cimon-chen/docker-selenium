@@ -4,6 +4,7 @@
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #FROM baozhida/selenium-base:3.3.1
 FROM cimoniris/base:latest
+
 MAINTAINER baozhia <baozhida88@126.com>
 
 #========================
