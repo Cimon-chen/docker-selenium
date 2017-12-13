@@ -1,61 +1,72 @@
 FROM ubuntu:16.04
-LABEL authors="Selenium <selenium-developers@googlegroups.com>"
+MAINTAINER baozihda <baozihda88@126.com>
 
-#================================================
-# Customize sources for apt-get
-#================================================
+# 使用root用户 
+USER root
+
+# 使用Ubuntu官方的Apt-get源
 RUN  echo "deb http://archive.ubuntu.com/ubuntu xenial main universe\n" > /etc/apt/sources.list \
   && echo "deb http://archive.ubuntu.com/ubuntu xenial-updates main universe\n" >> /etc/apt/sources.list \
   && echo "deb http://security.ubuntu.com/ubuntu xenial-security main universe\n" >> /etc/apt/sources.list
-
-# No interactive frontend during docker build
-ENV DEBIAN_FRONTEND=noninteractive \
-    DEBCONF_NONINTERACTIVE_SEEN=true
-
+  
 #========================
 # Miscellaneous packages
 # Includes minimal runtime used for executing non GUI Java programs
 #========================
-RUN apt-get -qqy update \
+RUN apt-get update -qqy \
   && apt-get -qqy --no-install-recommends install \
     bzip2 \
     ca-certificates \
     openjdk-8-jre-headless \
     tzdata \
     sudo \
+    locales \
     unzip \
     wget \
+    curl \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
   && sed -i 's/securerandom\.source=file:\/dev\/random/securerandom\.source=file:\/dev\/urandom/' ./usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/java.security
 
-#===================
-# Timezone settings
-# Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
-#===================
-ENV TZ "UTC"
-RUN echo "${TZ}" > /etc/timezone \
+
+# 配置中文语言
+ENV LANGUAGE zh_CN.UTF-8
+ENV LANG zh_CN.UTF-8
+ENV LC_ALL=zh_CN.UTF-8
+RUN  apt-get update -qqy \
+  && /usr/share/locales/install-language-pack zh_CN \
+  && locale-gen zh_CN.UTF-8 \
+  && dpkg-reconfigure --frontend noninteractive locales \
+  && apt-get -qqy --no-install-recommends install language-pack-zh-hans
+
+# 安装基本字体
+RUN  apt-get update -qqy \
+  && apt-get -qqy --no-install-recommends install \
+    fonts-ipafont-gothic \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    xfonts-cyrillic \
+    xfonts-scalable
+
+# 安装文泉驿微米黑字体
+RUN  apt-get update -qqy \
+  && apt-get -qqy install ttf-wqy-microhei \
+  && ln /etc/fonts/conf.d/65-wqy-microhei.conf /etc/fonts/conf.d/69-language-selector-zh-cn.conf
+
+# 设置时区
+RUN ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && dpkg-reconfigure --frontend noninteractive tzdata
+
+#==========
+# 配置Selenium
+#==========
+RUN  mkdir -p /opt/selenium \
+  && wget --no-verbose https://selenium-release.storage.googleapis.com/3.3/selenium-server-standalone-3.3.1.jar -O /opt/selenium/selenium-server-standalone.jar
+
 
 #========================================
 # Add normal user with passwordless sudo
 #========================================
-RUN useradd seluser \
-         --shell /bin/bash  \
-         --create-home \
-  && usermod -a -G root seluser \
+RUN sudo useradd uiauto --shell /bin/bash --create-home \
+  && sudo usermod -a -G sudo uiauto \
   && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
-  && echo 'seluser:secret' | chpasswd
-
-RUN chmod 666 /etc/hosts
-#===================================================
-# Run the following commands as non-privileged user
-#===================================================
-USER seluser
-
-#==========
-# Selenium
-#==========
-RUN  sudo mkdir -p /opt/selenium \
-  && sudo chown seluser:seluser /opt/selenium \
-  && wget --no-verbose https://selenium-release.storage.googleapis.com/3.8/selenium-server-standalone-3.8.1.jar \
-    -O /opt/selenium/selenium-server-standalone.jar
+  && echo 'uiauto:secret' | chpasswd

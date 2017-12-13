@@ -2,10 +2,8 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM selenium/base:3.8.1-aluminum
-LABEL authors=SeleniumHQ
-
-USER seluser
+FROM baozhida/selenium-base:3.3.1
+MAINTAINER baozhia <baozhida88@126.com>
 
 #========================
 # Selenium Configuration
@@ -13,31 +11,29 @@ USER seluser
 
 EXPOSE 4444
 
-# As integer, maps to "maxSession"
-ENV GRID_MAX_SESSION 5
-# In milliseconds, maps to "newSessionWaitTimeout"
-ENV GRID_NEW_SESSION_WAIT_TIMEOUT -1
-# As a boolean, maps to "throwOnCapabilityNotPresent"
 ENV GRID_THROW_ON_CAPABILITY_NOT_PRESENT true
-# As an integer
+# In milliseconds
+ENV GRID_NEW_SESSION_WAIT_TIMEOUT -1
 ENV GRID_JETTY_MAX_THREADS -1
-# In milliseconds, maps to "cleanUpCycle"
+# In milliseconds
+ENV GRID_NODE_POLLING  5000
+# In milliseconds
 ENV GRID_CLEAN_UP_CYCLE 5000
-# In seconds, maps to "browserTimeout"
+# In seconds
+ENV GRID_TIMEOUT 180
+# In seconds
 ENV GRID_BROWSER_TIMEOUT 0
-# In seconds, maps to "timeout"
-ENV GRID_TIMEOUT 30
-# Debug
-ENV GRID_DEBUG false
-# As integer, maps to "port"
-ENV GRID_HUB_PORT 4444
+ENV GRID_MAX_SESSION 15
+# In milliseconds
+ENV GRID_UNREGISTER_IF_STILL_DOWN_AFTER 30000
 
-COPY generate_config \
-    entry_point.sh \
-    /opt/bin/
-# Running this command as sudo just to avoid the message:
-# To run a command as administrator (user "root"), use "sudo <command>". See "man sudo_root" for details.
-# When logging into the container
-RUN /opt/bin/generate_config > /opt/selenium/config.json
+COPY generate_config /opt/selenium/generate_config
+COPY entry_point.sh /opt/bin/entry_point.sh
+RUN  chmod +x /opt/selenium/generate_config \
+  && chmod +x /opt/bin/entry_point.sh \
+  && sh /opt/selenium/generate_config > /opt/selenium/config.json
+RUN chown -R uiauto /opt/selenium
+
+USER uiauto
 
 CMD ["/opt/bin/entry_point.sh"]

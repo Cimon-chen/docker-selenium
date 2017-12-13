@@ -3,7 +3,7 @@
 ROOT=/opt/selenium
 CONF=$ROOT/config.json
 
-/opt/bin/generate_config >$CONF
+$ROOT/generate_config >$CONF
 
 echo "starting selenium hub with configuration:"
 cat $CONF
@@ -27,3 +27,4 @@ NODE_PID=$!
 
 trap shutdown SIGTERM SIGINT
 wait $NODE_PID
+
