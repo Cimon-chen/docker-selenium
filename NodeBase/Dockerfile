@@ -2,7 +2,8 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM baozhida/selenium-base:3.3.1
+#FROM baozhida/selenium-base:3.3.1
+FROM cimoniris/base:latest
 MAINTAINER baozihda <baozihda88@126.com>
 
 ENV DEBIAN_FRONTEND noninteractive
