@@ -2,7 +2,8 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM baozhida/selenium-node-chrome:3.3.1
+#FROM baozhida/selenium-node-chrome:3.3.1
+FROM cimoniris/node-chrome:latest
 MAINTAINER baozihda <baozihda88@126.com>
 
 USER root
