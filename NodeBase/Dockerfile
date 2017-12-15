@@ -17,6 +17,9 @@ RUN apt-get update -qqy \
     xvfb \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
+RUN apt-get update -qqy \
+  && apt-get -qqy install vim
+
 #==============================
 # Scripts to run Selenium Node
 #==============================
