@@ -4,7 +4,7 @@
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #FROM baozhida/selenium-node-chrome:3.3.1
 FROM cimoniris/node-chrome:latest
-MAINTAINER baozihda <baozihda88@126.com>
+MAINTAINER cimon <chenmeng@xyz.cn>
 
 USER root
 
